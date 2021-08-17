@@ -39,7 +39,7 @@ Sex = st.sidebar.selectbox("Sex",('Male','Female'))
 T = st.sidebar.selectbox("T stage",('T1','T2','T3','TX'))
 N = st.sidebar.selectbox("N stage",('N0','N1','NX'))
 surgery = st.sidebar.selectbox("Surgery",('No','Yes'),index=0)
-Radiation = st.sidebar.selectbox("Radiation",('No','Yes'),index=0)
+#Radiation = st.sidebar.selectbox("Radiation",('No','Yes'),index=0)
 #Chemotherapy = st.sidebar.selectbox("Chemotherapy",('No','Yes'),index=0)
 Bone_metastases = st.sidebar.selectbox("Bone metastases",('No','Yes'))
 #Lung_metastases = st.sidebar.selectbox("Lung metastases",('No','Yes'))
@@ -63,7 +63,7 @@ thyroid_train = pd.read_csv('train.csv', low_memory=False)
 thyroid_train['Lung.metastases'] = thyroid_train['Lung.metastases'].apply(lambda x : +1 if x==1 else 0)
 #thyroid_test = pd.read_csv('test.csv', low_memory=False)
 #thyroid_test['BM'] = thyroid_test['BM'].apply(lambda x : +1 if x==1 else 0)
-features = ['Sex','T','N','surgery','Radiation','Bone.metastases']
+features = ['Sex','T','N','surgery','Bone.metastases']
 target = 'Lung.metastases'
 
 #处理数据不平衡
@@ -76,8 +76,8 @@ XGB.fit(X_ros, y_ros)
 
 sp = 0.5
 #figure
-is_t = (XGB.predict_proba(np.array([[Sex,T,N,surgery,Radiation,Bone_metastases]]))[0][1])> sp
-prob = (XGB.predict_proba(np.array([[Sex,T,N,surgery,Radiation,Bone_metastases]]))[0][1])*1000//1/10
+is_t = (XGB.predict_proba(np.array([[Sex,T,N,surgery,Bone_metastases]]))[0][1])> sp
+prob = (XGB.predict_proba(np.array([[Sex,T,N,surgery,Bone_metastases]]))[0][1])*1000//1/10
 
 #st.write('is_t:',is_t,'prob is ',prob)
 #st.markdown('## is_t:'+' '+str(is_t)+' prob is:'+' '+str(prob))
@@ -87,10 +87,10 @@ if is_t:
 else:
     result = 'Low Risk'
 if st.button('Predict'):
-    st.markdown('## Risk grouping for LNM:  '+str(result))
+    st.markdown('## Risk grouping for LM:  '+str(result))
     if result == 'Low Risk':
         st.balloons()
-    st.markdown('## Probability of LNM:  '+str(prob)+'%')
+    st.markdown('## Probability of LM:  '+str(prob)+'%')
 #st.markdown('## The risk of bone metastases is '+str(prob/0.0078*1000//1/1000)+' times higher than the average risk .')
 
 #排版占行
@@ -104,7 +104,7 @@ st.title("")
 #st.warning('This is a warning')
 #st.error('This is an error')
 
-st.info('Information of the model: Auc: 0.737 ;Accuracy: 0.784 ;Sensitivity(recall): 0.550 ;Specificity :0.839 ')
+#st.info('Information of the model: Auc: 0.737 ;Accuracy: 0.784 ;Sensitivity(recall): 0.550 ;Specificity :0.839 ')
 #st.success('Affiliation: The First Affiliated Hospital of Nanchang University, Nanchnag university. ')
 
 
